@@ -8,7 +8,7 @@ contract Library is Ownable {
 
     struct Book {
         string name;
-        uint256 totalCopies;
+        uint256 availableCopies;
         uint256 counter;
         mapping(uint256 => address) history;
     }
@@ -43,7 +43,7 @@ contract Library is Ownable {
         uint256 _bookId = _getNextBookId();
         Book storage book = BookLedger[_bookId];
         book.name = _name;
-        book.totalCopies = _copies;
+        book.availableCopies = _copies;
         _increment();
     }
 
@@ -51,8 +51,8 @@ contract Library is Ownable {
         require(!isAlreadyIssued[msg.sender][_id], "Book is already issued");
         isAlreadyIssued[msg.sender][_id] = true;
         Book storage book = BookLedger[_id];
-        require(book.totalCopies.sub(1) >= 0);
-        book.totalCopies -= 1;
+        require(book.availableCopies.sub(1) >= 0);
+        book.availableCopies -= 1;
         book.history[book.counter] = msg.sender;
         book.counter += 1;
     }
@@ -60,21 +60,21 @@ contract Library is Ownable {
     function returnBook(uint256 _id) external {
         require(isAlreadyIssued[msg.sender][_id], "Book is not issued");
         Book storage book = BookLedger[_id];
-        book.totalCopies += 1;
+        book.availableCopies += 1;
         isAlreadyIssued[msg.sender][_id] = false;
     }
 
     function getAllAvailableBooks() external view returns (uint256[] memory) {
         uint256 currentIndex = 0;
         for (uint256 index = 1; index <= counter; index++) {
-            if (!isAlreadyIssued[msg.sender][index] && BookLedger[index].totalCopies > 0) {
+            if (!isAlreadyIssued[msg.sender][index] && BookLedger[index].availableCopies > 0) {
                 currentIndex++;
             }
         }
         uint256[] memory result = new uint256[](currentIndex);
         currentIndex = 0;
         for (uint256 index = 1; index <= counter; index++) {
-            if (!isAlreadyIssued[msg.sender][index] && BookLedger[index].totalCopies > 0) {
+            if (!isAlreadyIssued[msg.sender][index] && BookLedger[index].availableCopies > 0) {
                 result[currentIndex] = index;
                 currentIndex++;
             }
@@ -100,7 +100,7 @@ contract Library is Ownable {
         returns (string memory, uint256)
     {
         require(isPresent[BookLedger[_id].name]);
-        return (BookLedger[_id].name, BookLedger[_id].totalCopies);
+        return (BookLedger[_id].name, BookLedger[_id].availableCopies);
 
     }
 }
