@@ -1,8 +1,6 @@
 # Library
 ## Requirements
-* Rust (nightly)
-* Docker
-* docker-compose
+* Node > v12
 
 ## Setup and test
 ```
