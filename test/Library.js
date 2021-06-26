@@ -19,7 +19,7 @@ contract("Library", (accounts) => {
     );
     await LibraryContract.addBook(bookName + "1", copies, { from: admin });
     await LibraryContract.addBook(bookName + "2", copies, { from: admin });
-    const counter = await LibraryContract.counter();
+    const counter = await LibraryContract.bookCount();
     assert.equal(counter.toNumber(), 3);
   });
 
@@ -82,7 +82,7 @@ contract("Library", (accounts) => {
 
     await LibraryContract.returnBook(avlBook[0], { from: issuer1 });
     await LibraryContract.returnBook(avlBook[0], { from: issuer3 });
-    const data = await LibraryContract.getBorrowHistoryOfBook(avlBook[0], {
+    const data = await LibraryContract.getOwnerHistoryOfBook(avlBook[0], {
       from: issuer1,
     });
     const result = [issuer1, issuer2, issuer3];
