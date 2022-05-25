@@ -17,7 +17,7 @@ body:
       options:
         - label: I am running the latest version
           required: true
-        - label: I checked the documentation and found no answer
+        - label: I checked the documentation and found no answer [../Readme.md]
           required: true
         - label: I checked to make sure that this issue has not already been filed
           required: true
