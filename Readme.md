@@ -1,6 +1,6 @@
 # Library
 ## Requirements
-* Node > v12
+* Node >= v12
 
 ## Setup and test
 ```
